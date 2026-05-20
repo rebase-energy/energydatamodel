@@ -20,6 +20,8 @@ Subclassing any registered Element class (e.g. ``edm.NodeAsset``,
 no decorator required. See the README for the extension recipe.
 """
 
+from importlib.metadata import version
+
 from timedatamodel import (
     DataShape,
     DataType,
@@ -170,4 +172,4 @@ __all__ = [
 ]
 
 
-__version__ = "0.2.0"
+__version__ = version("energydatamodel")
