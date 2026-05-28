@@ -65,7 +65,7 @@ Release Notes
 
 For version-by-version changes, see:
 
-- `Changelog <https://github.com/rebase-energy/EnergyDataModel/blob/main/CHANGELOG.md>`_
+- `Changelog <https://github.com/rebase-energy/energydatamodel/blob/main/CHANGELOG.md>`_
 
 
 Documentation

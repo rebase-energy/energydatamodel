@@ -24,7 +24,7 @@ dependencies = [
 
 [project.urls]
 homepage = "https://energydatamodel.org"
-repository = "https://github.com/rebase-energy/EnergyDataModel"
+repository = "https://github.com/rebase-energy/energydatamodel"
 documentation = "https://docs.energydatamodel.org/en/latest"
 
 [project.optional-dependencies]

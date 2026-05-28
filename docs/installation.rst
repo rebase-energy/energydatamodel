@@ -24,13 +24,13 @@ To install the **latest** release from Github:
 
 .. code-block:: bash
 
-   pip install git+https://github.com/rebase-energy/EnergyDataModel
+   pip install git+https://github.com/rebase-energy/energydatamodel
 
 To install in **editable** mode for development:
 
 .. code-block:: bash
 
-   git clone https://github.com/rebase-energy/EnergyDataModel.git
+   git clone https://github.com/rebase-energy/energydatamodel.git
    cd EnergyDataModel
    pip install -e . 
 

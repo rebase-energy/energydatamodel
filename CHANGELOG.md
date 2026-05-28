@@ -54,7 +54,7 @@ restored = edm.Portfolio.from_json(js)
 
 Try it instantly in Colab — no install needed:
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rebase-energy/EnergyDataModel/blob/main/examples/quickstart.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rebase-energy/energydatamodel/blob/main/examples/quickstart.ipynb)
 
 ## 📚 Resources
 
@@ -63,6 +63,6 @@ Try it instantly in Colab — no install needed:
 - **Community**: [Join us on Slack](https://dub.sh/yTqMriJ)
 - **License**: MIT
 
-**Full Changelog**: <https://github.com/rebase-energy/EnergyDataModel/commits/v0.2.0>
+**Full Changelog**: <https://github.com/rebase-energy/energydatamodel/commits/v0.2.0>
 
 Are you using EnergyDataModel in your work? We'd love to hear your feedback. Open an issue or join our Slack community to help us build a shared vocabulary for energy systems.

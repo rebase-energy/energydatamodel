@@ -18,7 +18,7 @@ By default writes two copies::
 Flags::
 
     --github-base URL   Base URL for source links
-                        (default: rebase-energy/EnergyDataModel main).
+                        (default: rebase-energy/energydatamodel main).
     --docs-base PATH    Relative prefix for autodoc deep links from where
                         the explorer is served (default: '../' so it works
                         from docs/_static/ → docs/energydatamodel/...).
@@ -836,7 +836,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--github-base",
-        default="https://github.com/rebase-energy/EnergyDataModel/blob/main",
+        default="https://github.com/rebase-energy/energydatamodel/blob/main",
         help="Base URL for source links (set to empty string to disable)",
     )
     parser.add_argument(

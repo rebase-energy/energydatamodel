@@ -1,5 +1,5 @@
 <div align="center">
-    <img height="80" src="https://github.com/rebase-energy/EnergyDataModel/blob/main/assets/logo-energydatamodel.png?raw=true" alt="EnergyDataModel"/>
+    <img height="80" src="https://github.com/rebase-energy/energydatamodel/blob/main/assets/logo-energydatamodel.png?raw=true" alt="EnergyDataModel"/>
 <h2 style="margin-top: 0px;">
     🔋 Represent energy systems as Python data classes for improved modularity and readability
 </h2>
@@ -16,10 +16,10 @@
     <img alt="Join us on Slack" src="https://img.shields.io/badge/Join%20us%20on%20Slack-%234A154B?style=flat&logo=slack&logoColor=white">
   </a>
   <a href="#contributors">
-    <img alt="All Contributors" src="https://img.shields.io/github/all-contributors/rebase-energy/EnergyDataModel?color=2b2292&style=flat-square">
+    <img alt="All Contributors" src="https://img.shields.io/github/all-contributors/rebase-energy/energydatamodel?color=2b2292&style=flat-square">
   </a>
-  <a href="https://github.com/rebase-energy/EnergyDataModel">
-    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/rebase-energy/EnergyDataModel?style=social">
+  <a href="https://github.com/rebase-energy/energydatamodel">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/rebase-energy/energydatamodel?style=social">
   </a>
 </p>
 
@@ -35,7 +35,7 @@
 &ensp;|&ensp;
 **📖 [Documentation](https://docs.energydatamodel.org/en/latest/)**
 &ensp;|&ensp;
-**🚀 [Try out now in Colab](https://colab.research.google.com/github/rebase-energy/EnergyDataModel/blob/main/energydatamodel/examples/example-1-to-tree-json.ipynb)**
+**🚀 [Try out now in Colab](https://colab.research.google.com/github/rebase-energy/energydatamodel/blob/main/energydatamodel/examples/example-1-to-tree-json.ipynb)**
 &ensp;|&ensp;
 **👋 [Join Slack Community](https://dub.sh/yTqMriJ)**
 
@@ -198,12 +198,12 @@ pip install energydatamodel
 
 Install the **latest** release: 
 ```bash
-pip install git+https://github.com/rebase-energy/EnergyDataModel.git
+pip install git+https://github.com/rebase-energy/energydatamodel.git
 ```
 
 Install in editable mode for **development**: 
 ```bash
-git clone https://github.com/rebase-energy/EnergyDataModel.git
+git clone https://github.com/rebase-energy/energydatamodel.git
 cd EnergyDataModel
 pip install -e .[dev] 
 ```
