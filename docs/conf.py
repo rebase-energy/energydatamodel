@@ -3,7 +3,9 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Path setup --------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Path setup
+# ---------------------------------------------------------------------------
 
 import glob
 import os
@@ -26,7 +28,9 @@ for nb_file in glob.glob(os.path.join(_examples_src, "*.ipynb")):
     if not os.path.exists(dest) or os.path.getmtime(nb_file) > os.path.getmtime(dest):
         shutil.copy2(nb_file, dest)
 
-# -- Project information -----------------------------------------------------
+# ---------------------------------------------------------------------------
+# Project information
+# ---------------------------------------------------------------------------
 
 project = "EnergyDataModel"
 copyright = "Rebase Energy"
@@ -34,7 +38,9 @@ author = "Rebase Energy"
 release = "0.2.0"
 version = "0.2.0"
 
-# -- General configuration ---------------------------------------------------
+# ---------------------------------------------------------------------------
+# General configuration
+# ---------------------------------------------------------------------------
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -53,7 +59,9 @@ nbsphinx_allow_errors = True
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
 
-# -- Options for HTML output -------------------------------------------------
+# ---------------------------------------------------------------------------
+# Options for HTML output
+# ---------------------------------------------------------------------------
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
@@ -62,12 +70,14 @@ html_theme_options = {
     "navigation_depth": 2,
 }
 
-# Custom CSS — widens the class_hierarchy page so the Cytoscape iframe has room to breathe.
+# Custom CSS: widens the class_hierarchy page so the Cytoscape iframe has room to breathe.
 html_css_files = [
     "css/class-hierarchy.css",
 ]
 
-# -- Extension configuration -------------------------------------------------
+# ---------------------------------------------------------------------------
+# Extension configuration
+# ---------------------------------------------------------------------------
 
 # Autodoc
 autodoc_default_options = {
@@ -93,13 +103,15 @@ intersphinx_mapping = {
     "pandas": ("https://pandas.pydata.org/docs/", None),
 }
 
-# sphinx-autodoc-typehints: evaluate `if TYPE_CHECKING:` blocks during doc generation
-# so type-only imports (e.g. Carrier in bases.py — circular at runtime) resolve.
+# sphinx-autodoc-typehints: evaluate if TYPE_CHECKING: blocks during doc generation
+# so type-only imports (e.g. Carrier in bases.py, circular at runtime) resolve.
 set_type_checking_flag = True
 always_document_param_types = True
 
 
-# -- Class-explorer regeneration ---------------------------------------------
+# ---------------------------------------------------------------------------
+# Class-explorer regeneration
+# ---------------------------------------------------------------------------
 # Regenerate edm-explorer.html (the Cytoscape class graph) before each build,
 # so the iframe served from _static/ is always in sync with the live class
 # hierarchy. Runs locally and on Read-the-Docs.

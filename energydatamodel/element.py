@@ -1,27 +1,27 @@
-"""Element — the root of the EDM type hierarchy.
+"""Element: the root of the EDM type hierarchy.
 
 ``Element`` is the shared base for everything in the model. It carries the
 fields that any persistable, named, geometry-bearing object needs:
 
-* ``id`` — a stable UUID7, generated at construction
-* ``name`` — human label (display / CLI navigation)
-* ``timeseries`` — metadata-only ``TimeSeries`` declarations attached to
+* ``id``: a stable UUID7, generated at construction
+* ``name``: human label (display / CLI navigation)
+* ``timeseries``: metadata-only ``TimeSeries`` declarations attached to
   this element (``df=None``; the actual data is written via the energydb
   data-write path, not carried inline on the EDM tree)
-* ``geometry`` — optional shapely geometry (Point, Polygon, LineString, ...)
-* ``extra`` — open dict of JSON-native scalars
+* ``geometry``: optional shapely geometry (Point, Polygon, LineString, ...)
+* ``extra``: open dict of JSON-native scalars
 
 Sibling subtrees specialize ``Element``:
 
-* :class:`Node` (in :mod:`energydatamodel.node`) — anything that exists
-  as a "thing": graph vertices, Areas, plus container markers.
-  Adds ``members`` and ``tz``.
-* :class:`Edge` (in :mod:`energydatamodel.edge`) — edges between
+* :class:`Node` (in :mod:`energydatamodel.node`): anything that exists as a
+  "thing" (graph vertices, Areas, plus container markers). Adds ``members``
+  and ``tz``.
+* :class:`Edge` (in :mod:`energydatamodel.edge`): edges between
   two Nodes. Adds ``from_element``, ``to_element``, ``directed``.
-* :class:`Asset` (in :mod:`energydatamodel.asset`) — mixin marking
+* :class:`Asset` (in :mod:`energydatamodel.asset`): mixin marking
   physical energy equipment. Mixed with ``Node`` or ``Edge`` via
   :class:`NodeAsset` / :class:`EdgeAsset`.
-* :class:`Collection` (in :mod:`energydatamodel.containers`) — groupings
+* :class:`Collection` (in :mod:`energydatamodel.containers`): groupings
   that aren't graph vertices (Portfolio, Site, Region, ...).
 
 Identity is a UUID7 assigned at construction. The same Element instance keeps
@@ -39,23 +39,23 @@ from shapely.geometry.base import BaseGeometry
 from timedatamodel import TimeSeries
 from uuid6 import uuid7
 
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Field-metadata helpers
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 #
 # Each Element field is tagged with one of two roles:
 #
 #   - "infra"    : framework-owned (id, name, geometry, timeseries, extra,
 #                  members, tz, commissioning_date, from_element, ...).
-#                  Excluded from ``to_properties()``.
+#                  Excluded from to_properties().
 #   - "domain"   : everything else. The default if no metadata is set.
 #
-# ``infra(children=True)`` additionally marks a children-bearing field
-# (``members``), so that ``element_to_storage_dict`` can drop it when
+# infra(children=True) additionally marks a children-bearing field
+# (members), so that element_to_storage_dict can drop it when
 # the row is written flat (children stored via FK in DB).
 #
-# Concrete subclasses don't need to mark their domain fields — only
-# framework infra fields use ``infra(...)``.
+# Concrete subclasses don't need to mark their domain fields; only framework
+# infra fields use infra(...).
 
 
 @overload
@@ -119,8 +119,8 @@ class Element:
     human label; renames don't change the ``id``.
 
     Subclasses are auto-registered for JSON dispatch via
-    ``__init_subclass__`` — defining ``class Foo(NodeAsset): ...`` is enough
-    for round-trip serialization, no decorator required.
+    ``__init_subclass__``: defining ``class Foo(NodeAsset): ...`` is enough
+    for round-trip serialization, with no decorator required.
     """
 
     id: UUID = field(default_factory=uuid7, metadata={"role": "infra"})
@@ -129,7 +129,7 @@ class Element:
     geometry: BaseGeometry | None = field(default=None, metadata={"role": "infra"})
     # Free-form bag for ad-hoc scalar fields not modeled here. Restricted to
     # JSON-native scalars (str / int / float / bool / None) plus nested
-    # dict / list of same. EDM types and enums are *not* allowed — define a
+    # dict / list of same. EDM types and enums are not allowed; define a
     # typed subclass instead.
     extra: dict = field(default_factory=dict, metadata={"role": "infra"})
     lat: InitVar[float | None] = None
@@ -139,9 +139,9 @@ class Element:
         super().__init_subclass__(**kwargs)
         # Auto-register every Element subclass for JSON dispatch on definition.
         # Last-write-wins: re-running a class definition in a notebook creates
-        # a new class object with the same name, and we want the latest one to
-        # be authoritative — matches Python's own class-redefinition semantics.
-        # Lazy import avoids the circular dependency with ``json_io``.
+        # a new class object with the same name, and the latest one should be
+        # authoritative, matching Python's own class-redefinition semantics.
+        # Lazy import avoids the circular dependency with json_io.
         from energydatamodel.json_io import _REGISTRY
 
         _REGISTRY[cls.__name__] = cls
@@ -162,10 +162,12 @@ class Element:
             if not (minx >= -180 and maxx <= 180 and miny >= -90 and maxy <= 90):
                 raise ValueError(
                     f"geometry bounds {self.geometry.bounds} fall outside "
-                    "WGS84 lon/lat range — did you swap lat and lon?"
+                    "WGS84 lon/lat range: did you swap lat and lon?"
                 )
 
-    # ------------------------------------------------------------------ shape
+    # -----------------------------------------------------------------------
+    # shape
+    # -----------------------------------------------------------------------
     @property
     def latitude(self) -> float | None:
         """Latitude, if ``geometry`` is a shapely ``Point``; else ``None``."""
@@ -187,7 +189,9 @@ class Element:
             return None
         return self.geometry.centroid
 
-    # ------------------------------------------------------------------ tree
+    # -----------------------------------------------------------------------
+    # tree
+    # -----------------------------------------------------------------------
     def children(self) -> list:
         """Child elements for tree walking. Override in subclasses with children."""
         return []
@@ -215,7 +219,9 @@ class Element:
 
         return build_index(self)
 
-    # --------------------------------------------------------------- props
+    # -----------------------------------------------------------------------
+    # props
+    # -----------------------------------------------------------------------
     def to_properties(self) -> dict:
         """Domain-specific fields as a dict (excludes infra + children fields)."""
         props: dict = {}
@@ -231,7 +237,9 @@ class Element:
             props[f.name] = value
         return props
 
-    # --------------------------------------------------------------- json
+    # -----------------------------------------------------------------------
+    # json
+    # -----------------------------------------------------------------------
     def to_json(self, *, exclude_fields: set | None = None) -> dict:
         """Serialize to a JSON-compatible dict."""
         from energydatamodel.json_io import element_to_json
@@ -245,7 +253,9 @@ class Element:
 
         return element_from_json(data, expected_type=cls)
 
-    # ------------------------------------------------------------- geojson
+    # -----------------------------------------------------------------------
+    # geojson
+    # -----------------------------------------------------------------------
     def geometry_to_geojson(self, geometry):
         if isinstance(geometry, Point):
             return {"type": "Point", "coordinates": list(geometry.coords)[0]}
@@ -294,7 +304,9 @@ class Element:
                     geojson_properties[attr_name] = attr_value
         return geojson_geometry, geojson_properties
 
-    # ---------------------------------------------------------------- misc
+    # -----------------------------------------------------------------------
+    # misc
+    # -----------------------------------------------------------------------
     def to_dataframe(self):
         data = {f.name: getattr(self, f.name) for f in fields(self)}
         return pd.DataFrame({self.__class__.__name__: data})

@@ -1,4 +1,4 @@
-"""Tests for Reference[T] — UUID-based cross-tree references and Index."""
+"""Tests for Reference[T]: UUID-based cross-tree references and Index."""
 
 from uuid import UUID, uuid4
 
@@ -79,7 +79,7 @@ class TestResolve:
 
 
 class TestPathHelper:
-    """``Reference.path`` — debug helper, not part of the wire format."""
+    """``Reference.path``: debug helper, not part of the wire format."""
 
     def test_path_of_resolved(self):
         portfolio, _, _, _ = _make_tree()

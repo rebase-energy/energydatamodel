@@ -1,15 +1,15 @@
-"""Edge — the "relationship" subtree of EDM.
+"""Edge: the "relationship" subtree of EDM.
 
 An ``Edge`` is an edge between two :class:`Node` instances: a line between
 two buses, an interconnector between two bidding zones, a pipe between two
 delivery points. Edges sit sibling to ``Node`` under :class:`Element`, not
-under ``Node`` — this keeps ``members`` and ``tz`` off Edges, where they
+under ``Node``; this keeps ``members`` and ``tz`` off Edges, where they
 don't apply.
 
 Concrete edge-equipment subclasses (Line, Link, Pipe, Interconnection)
 live in :mod:`energydatamodel.grid` under :class:`EdgeAsset`. Note that
-``Transformer`` is a node (``NodeAsset``), not an edge — it has HV and
-LV sides that lines connect to.
+``Transformer`` is a node (``NodeAsset``), not an edge: it has HV and LV
+sides that lines connect to.
 """
 
 from dataclasses import dataclass
@@ -23,16 +23,16 @@ from energydatamodel.reference import Reference
 class Edge(Element):
     """An edge between two Nodes.
 
-    Edges are **always directed by convention** — flow in the opposite
+    Edges are **always directed by convention**: flow in the opposite
     direction is expressed as a signed value on the timeseries. The
     ``directed`` flag is kept for explicit cases (e.g. pure bidirectional
     pipes).
 
     Endpoints accept an :class:`Element`, a :class:`UUID`, or a
     :class:`Reference`; ``__post_init__`` normalizes all of these to
-    :class:`Reference`. The widened input type is a constructor convenience
-    — once the edge is built, ``from_element`` and ``to_element`` always
-    hold ``Reference | None``.
+    :class:`Reference`. The widened input type is a constructor convenience:
+    once the edge is built, ``from_element`` and ``to_element`` always hold
+    ``Reference | None``.
     """
 
     from_element: Reference | Element | UUID | None = infra(default=None)

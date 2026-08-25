@@ -1,9 +1,9 @@
 """Collection marker and container subclasses.
 
 :class:`Collection` is an :class:`Element` whose primary purpose is grouping
-other elements. It is **not** a :class:`Node` — collections aren't graph
-vertices; they're organizational/logical groupings. Collection shares the
-``members`` and ``tz`` field shape with Node, but the semantics differ —
+other elements. It is **not** a :class:`Node`; collections aren't graph
+vertices, just organizational/logical groupings. Collection shares the
+``members`` and ``tz`` field shape with Node, but the semantics differ:
 ``isinstance(x, Node)`` on a Portfolio should return False.
 
 Concrete subclasses carry no additional fields; they distinguish a Portfolio
@@ -11,14 +11,14 @@ from a Site at the type level for serialization / introspection / UI.
 
 Conventions:
 
-* ``Portfolio`` — trading/asset aggregate. Typically no geometry.
-* ``Site`` — a geographic site containing assets. Typically a ``Point`` geometry.
-* ``MultiSite`` — group of sites.
-* ``Region`` — a named geographic region with a ``Polygon`` / ``MultiPolygon``
+* ``Portfolio``: trading/asset aggregate. Typically no geometry.
+* ``Site``: a geographic site containing assets. Typically a ``Point`` geometry.
+* ``MultiSite``: group of sites.
+* ``Region``: a named geographic region with a ``Polygon`` / ``MultiPolygon``
   geometry. (Distinct from :class:`Area`: regions are not bound to a market /
   administrative scope.)
-* ``EnergyCommunity`` — members share resources/balance.
-* ``VirtualPowerPlant`` — traded flexibility aggregate.
+* ``EnergyCommunity``: members share resources/balance.
+* ``VirtualPowerPlant``: traded flexibility aggregate.
 """
 
 import datetime
@@ -31,7 +31,7 @@ from energydatamodel.element import Element, infra
 class Collection(Element):
     """An Element whose primary purpose is grouping other Elements.
 
-    Not a :class:`Node` — collections are organizational groupings, not graph
+    Not a :class:`Node`: collections are organizational groupings, not graph
     vertices. Carries ``members`` and ``tz`` (same shape as Node, different
     semantics).
     """
@@ -65,7 +65,7 @@ class MultiSite(Collection):
 
 @dataclass(repr=False, kw_only=True)
 class Region(Collection):
-    """A named geographic region — typically backed by a Polygon geometry.
+    """A named geographic region: typically backed by a Polygon geometry.
 
     Distinct from :class:`Area`: a Region is not labeled by market or
     administrative scope; it's a freeform geographic grouping.
@@ -74,9 +74,9 @@ class Region(Collection):
 
 @dataclass(repr=False, kw_only=True)
 class EnergyCommunity(Collection):
-    """An energy community — members share resources/balance."""
+    """An energy community: members share resources/balance."""
 
 
 @dataclass(repr=False, kw_only=True)
 class VirtualPowerPlant(Collection):
-    """A virtual power plant — traded flexibility aggregate."""
+    """A virtual power plant: traded flexibility aggregate."""

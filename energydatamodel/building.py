@@ -1,4 +1,4 @@
-"""Building and House — Assets that also contain other Assets via inherited members."""
+"""Building and House: Assets that also contain other Assets via inherited members."""
 
 from dataclasses import dataclass
 
@@ -22,7 +22,9 @@ class House(NodeAsset):
 
     type: str | None = None
 
-    # ----- convenience queries -------------------------------------------------
+    # -----------------------------------------------------------------------
+    # convenience queries
+    # -----------------------------------------------------------------------
     def has_demand(self) -> bool:
         return bool(self.timeseries)
 

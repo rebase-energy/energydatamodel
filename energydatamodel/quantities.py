@@ -1,9 +1,8 @@
-"""Energy vocabulary — Quantity / Kind / Scope enums + ``build_metric()``.
+"""Energy vocabulary: Quantity / Kind / Scope enums + ``build_metric()``.
 
-Replaces the old ``ElectricityDemand(TimeSeries)`` subclass pattern: a
-``TimeSeries`` carries a string ``name`` field whose value is a dotted
+A ``TimeSeries`` carries a string ``name`` field whose value is a dotted
 metric string built from ``(Quantity, Kind, Scope)`` via
-:func:`build_metric`.
+:func:`build_metric`, rather than a per-quantity ``TimeSeries`` subclass.
 """
 
 from __future__ import annotations

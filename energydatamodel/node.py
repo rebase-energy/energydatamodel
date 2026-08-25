@@ -1,17 +1,17 @@
-"""Node — the "vertex" subtree of EDM.
+"""Node: the "vertex" subtree of EDM.
 
 A Node is anything that exists as a graph vertex in the model: a piece of
 equipment, an administrative area, a grid topology point, or a sensor. Adds
 two fields to :class:`Element`:
 
-* ``members`` — child elements (used by WindFarm, Network, etc.)
-* ``tz`` — local timezone, where meaningful
+* ``members``: child elements (used by WindFarm, Network, etc.)
+* ``tz``: local timezone, where meaningful
 
 Equipment-shaped vertices (WindTurbine, Battery, Sensor, GridNode, ...) mix
 :class:`Asset` via :class:`NodeAsset` in :mod:`energydatamodel.bases`.
 Edges between nodes live in the sibling :class:`Edge` subtree. Logical
 groupings (Portfolio, Site, ...) live in :class:`Collection`, which is a
-sibling of Node under :class:`Element` — not a subclass of Node.
+sibling of Node under :class:`Element`, not a subclass of Node.
 """
 
 import datetime
@@ -22,7 +22,7 @@ from energydatamodel.element import Element, infra
 
 @dataclass(repr=False, kw_only=True)
 class Node(Element):
-    """An Element that exists as a graph vertex — can hold members and a timezone.
+    """An Element that exists as a graph vertex; holds members and a timezone.
 
     Subclassed by NodeAsset (equipment) and Area (administrative regions).
     """

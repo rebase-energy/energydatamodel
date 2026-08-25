@@ -3,7 +3,7 @@
 A ``Reference[T]`` points to another Element by its stable :class:`UUID`
 identity. Resolution against a tree builds an :class:`Index` (``dict[UUID,
 Element]`` produced by DFS) and uses it for O(1) lookup. References are
-valid the moment they're constructed — no two-pass deserialize.
+valid the moment they're constructed, with no two-pass deserialize.
 
 Path-shaped operations (``Reference.path(root)``) are still available for
 human display and debug, but are not part of the wire format.
@@ -22,9 +22,9 @@ class UnresolvedReferenceError(LookupError):
     """Raised when a Reference can't be resolved against a tree."""
 
 
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Index
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class Index:
@@ -66,7 +66,7 @@ def build_index(root: Element) -> Index:
 
     Detects cycles: a node visited twice via the same ``id()`` raises
     :class:`ValueError`. Duplicate UUIDs (same id on two distinct objects)
-    raise :class:`ValueError` — UUIDs are supposed to be unique.
+    raise :class:`ValueError`, since UUIDs are supposed to be unique.
     """
     by_id: dict[UUID, Element] = {}
     seen: set[int] = set()
@@ -89,9 +89,9 @@ def build_index(root: Element) -> Index:
     return Index(by_id)
 
 
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Reference
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class Reference[T: "Element"]:
@@ -128,7 +128,7 @@ class Reference[T: "Element"]:
         else:
             raise TypeError(f"Reference target must be Element | UUID | str, got {type(target).__name__}")
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     @property
     def id(self) -> UUID:
         """The UUID this reference points at."""
@@ -151,7 +151,7 @@ class Reference[T: "Element"]:
     def resolve(self, root_or_index: Element | Index) -> Element:
         """Resolve against a tree root or a pre-built :class:`Index`.
 
-        Idempotent — once resolved, subsequent calls return the cached
+        Idempotent: once resolved, subsequent calls return the cached
         Element without re-walking. Pass an :class:`Index` directly when
         resolving many References against the same tree.
         """
@@ -166,14 +166,14 @@ class Reference[T: "Element"]:
             raise UnresolvedReferenceError(f"Reference {self._id!s} does not resolve against the given tree.") from None
         return self._target
 
-    # ------------------------------------------------------------------
-    # Optional path helper (debug only — not in the wire format)
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Optional path helper (debug only, not in the wire format)
+    # -----------------------------------------------------------------------
     def path(self, root: Element) -> tuple[str, ...]:
         """Best-effort name path from ``root`` to the target.
 
         Walks ``root.children()`` looking for the target object. Used for
-        human-readable display only — the wire format records UUID, not path.
+        human-readable display only, the wire format records UUID, not path.
         Names containing ``/`` are preserved as separate tuple elements.
         """
         target_id = self._id
@@ -195,7 +195,7 @@ class Reference[T: "Element"]:
             f"Target {self._id!s} not reachable from root {type(root).__name__}({getattr(root, 'name', None)!r})."
         )
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     def __repr__(self) -> str:
         if self._target is None:
             return f"Reference({self._id!s})"

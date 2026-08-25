@@ -43,7 +43,7 @@ class TestSubclassAutoRegistration:
         assert first is TempAsset
 
         @dataclass(repr=False, kw_only=True)
-        class TempAsset(edm.NodeAsset):  # noqa: F811 — intentional redefinition
+        class TempAsset(edm.NodeAsset):  # noqa: F811  (intentional redefinition)
             v: int = 0
 
         second = _REGISTRY["TempAsset"]
@@ -84,7 +84,7 @@ class TestExtraField:
         assert restored.extra == {"site_code": "H2-A"}
 
     def test_extra_rejects_non_scalar_values(self):
-        # `extra` is now restricted to JSON-native scalars. Use a typed
+        # extra is now restricted to JSON-native scalars. Use a typed
         # subclass for typed values.
         zone = edm.BiddingZone(name="Z")
         e = Electrolyzer(name="EL-1", capacity_kw=5000, extra={"linked": zone})

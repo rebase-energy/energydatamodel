@@ -50,11 +50,11 @@ class PVArray(NodeAsset):
 
 @dataclass(repr=False, kw_only=True)
 class PVSystem(NodeAsset):
-    """A PV system — an Asset that contains :class:`PVArray` members.
+    """A PV system: an Asset that contains :class:`PVArray` members.
 
     Stored in the inherited ``members`` list. Attach arrays explicitly with
-    ``pv_system.members.append(PVArray(...))`` or via ``add_child(...)`` —
-    no auto-creation.
+    ``pv_system.members.append(PVArray(...))`` or via ``add_child(...)``,
+    with no auto-creation.
     """
 
     capacity: float | None = None

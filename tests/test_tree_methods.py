@@ -49,7 +49,7 @@ class TestChildren:
 
     def test_pvsystem_does_not_auto_create_array(self):
         # The old back-compat behavior of auto-creating a PVArray from
-        # top-level capacity/tilt/azimuth is gone — empty PVSystem stays empty.
+        # top-level capacity/tilt/azimuth is gone, so an empty PVSystem stays empty.
         pv = edm.solar.PVSystem(name="PV", capacity=5, surface_azimuth=180, surface_tilt=25)
         assert pv.members == []
 
@@ -159,7 +159,7 @@ class TestAddChild:
         assert len(pv.members) == 1
 
     def test_pvsystem_accepts_any_element(self):
-        # PVSystem no longer enforces PVArray-only children.
+        # PVSystem does not enforce PVArray-only children.
         pv = edm.solar.PVSystem(name="PV01")
         sensor = edm.weather.RadiationSensor(name="R1", height=2.0)
         pv.add_child(sensor)

@@ -43,7 +43,9 @@ class Carrier:
     type: str
 
 
-# ----------------------------------------------------------------- EdgeAsset
+# ---------------------------------------------------------------------------
+# EdgeAsset
+# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)
@@ -55,7 +57,9 @@ class EdgeAsset(Edge, Asset):
     """
 
 
-# --------------------------------------------------------------------- Nodes
+# ---------------------------------------------------------------------------
+# Nodes
+# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)
@@ -77,8 +81,8 @@ class DeliveryPoint(GridNode):
 class Transformer(GridNode):
     """Transformer joining HV and LV sides of an electrical network.
 
-    Modeled as a topological grid node, not an edge — matches pandapower /
-    PyPSA topology where a transformer is a vertex with two voltage sides
+    Modeled as a topological grid node rather than an edge, matching
+    pandapower / PyPSA topology where a transformer is a vertex with two sides
     and edges (Lines) attach to each side. Inherits ``carrier`` from
     :class:`GridNode` (always electricity for a transformer).
     """
@@ -88,7 +92,9 @@ class Transformer(GridNode):
     voltage_lv: float | None = None  #: LV-side nominal voltage in kV.
 
 
-# ----------------------------------------------------------------- Edges
+# ---------------------------------------------------------------------------
+# Edges
+# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)
@@ -109,8 +115,8 @@ class Link(EdgeAsset):
 class Interconnection(EdgeAsset):
     """Cross-border / cross-area interconnection between two ``Area`` nodes.
 
-    The only Edge that carries paired forward/backward capacities —
-    TSO data typically reports them separately.
+    The only Edge that carries paired forward/backward capacities; TSO data
+    typically reports them separately.
     """
 
     capacity_forward: float | None = None
@@ -125,7 +131,9 @@ class Pipe(EdgeAsset):
     medium: str = "gas"
 
 
-# ----------------------------------------------------------------- Collections
+# ---------------------------------------------------------------------------
+# Collections
+# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)

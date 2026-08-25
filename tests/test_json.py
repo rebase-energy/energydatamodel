@@ -1,4 +1,4 @@
-"""Tests for JSON round-trip of Element trees — UUID-keyed wire format."""
+"""Tests for JSON round-trip of Element trees, UUID-keyed wire format."""
 
 import json
 from datetime import date, tzinfo
@@ -13,7 +13,7 @@ from timedatamodel import DataType
 
 
 def _nordic_portfolio():
-    """Tree with two cross-tree edge References — used in many tests below."""
+    """Tree with two cross-tree edge References: used in many tests below."""
     t01 = edm.wind.WindTurbine(
         name="T01",
         capacity=3.5,
@@ -64,7 +64,7 @@ class TestRoundTrip:
         js = p.to_json()
         icx_js = next(m for m in js["members"] if m["__type__"] == "Interconnection")
         assert "__ref__" in icx_js["from_element"]
-        # The ref payload is a UUID string — not a path.
+        # The ref payload is a UUID string, not a path.
         ref_str = icx_js["from_element"]["__ref__"]
         UUID(ref_str)  # raises if not a UUID
 
@@ -448,7 +448,7 @@ class TestExcludeFields:
 
 
 class TestElementToStorageDict:
-    """Tests for ``element_to_storage_dict`` — the flat-row wrapper."""
+    """Tests for ``element_to_storage_dict``: the flat-row wrapper."""
 
     def test_excludes_children(self):
         p = edm.Portfolio(

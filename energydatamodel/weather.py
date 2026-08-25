@@ -1,4 +1,4 @@
-"""Weather sensors — concrete :class:`Sensor` subclasses observing
+"""Weather sensors: concrete :class:`Sensor` subclasses observing
 environmental variables. ``height`` is inherited from :class:`Sensor`.
 """
 

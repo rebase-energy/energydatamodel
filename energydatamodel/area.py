@@ -1,13 +1,13 @@
-"""Area — administrative or market-defined geographic regions.
+"""Area: administrative or market-defined geographic regions.
 
 Each area type is a proper subclass of :class:`Area` (no scope enum, no
 constructor functions). Type discrimination is via ``isinstance``.
 
-* :class:`BiddingZone` — electricity market bidding zone (e.g. SE-SE1, DE-LU)
-* :class:`Country` — country-scoped area
-* :class:`ControlArea` — TSO control area
-* :class:`WeatherCell` — meteorological grid cell
-* :class:`SynchronousArea` — AC-synchronous grid (zones sharing one frequency).
+* :class:`BiddingZone`: electricity market bidding zone (e.g. SE-SE1, DE-LU)
+* :class:`Country`: country-scoped area
+* :class:`ControlArea`: TSO control area
+* :class:`WeatherCell`: meteorological grid cell
+* :class:`SynchronousArea`: AC-synchronous grid (zones sharing one frequency).
   Carries an extra ``nominal_frequency`` field (50 Hz in Europe / Nordic /
   GB / Ireland / Baltic / IPS-UPS; 60 Hz in North America).
 
@@ -47,7 +47,7 @@ class WeatherCell(Area):
 
 @dataclass(repr=False, kw_only=True)
 class SynchronousArea(Area):
-    """An AC-synchronous grid — zones that share a single operating frequency.
+    """An AC-synchronous grid: zones that share a single operating frequency.
 
     Examples: NSA (Nordic), CESA (Continental Europe), GBSA (Great Britain),
     ISA (Ireland), BSA (Baltic), IPSA (IPS/UPS). Default ``nominal_frequency``

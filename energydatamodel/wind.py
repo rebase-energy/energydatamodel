@@ -21,11 +21,11 @@ class WindTurbine(NodeAsset):
 
 @dataclass(repr=False, kw_only=True)
 class WindFarm(NodeAsset):
-    """A wind farm — an Asset that contains :class:`WindTurbine` members.
+    """A wind farm: an Asset that contains :class:`WindTurbine` members.
 
     Members are stored in the inherited ``members`` list. Real wind farms
     can also contain met masts, transformers and substations, so children
-    aren't restricted to ``WindTurbine`` — any :class:`Element` is accepted.
+    aren't restricted to ``WindTurbine``; any :class:`Element` is accepted.
     """
 
     capacity: float | pd.DataFrame | None = None

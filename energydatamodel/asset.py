@@ -1,8 +1,8 @@
-"""Asset — mixin marking physical energy equipment.
+"""Asset: mixin marking physical energy equipment.
 
 ``Asset`` is the umbrella for anything the energy domain treats as a physical,
 commissioned piece of equipment: wind turbines, batteries, heat pumps, sensors,
-meters, power lines, transformers, pipes. It is a pure mixin — never
+meters, power lines, transformers, pipes. It is a pure mixin, never
 instantiated directly and never used as a leaf type. Concrete equipment
 classes inherit from ``Asset`` together with either :class:`Node` or
 :class:`Edge` via the :class:`NodeAsset` / :class:`EdgeAsset` intermediates in
@@ -22,7 +22,7 @@ from energydatamodel.element import Element, infra
 class Asset(Element):
     """Marker mixin for physical energy equipment.
 
-    Carries fields genuinely shared across every piece of equipment —
+    Carries fields genuinely shared across every piece of equipment,
     independent of whether the equipment is shaped like a graph vertex
     (``WindTurbine``) or a graph edge (``Line``).
     """

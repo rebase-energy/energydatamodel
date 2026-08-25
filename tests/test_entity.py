@@ -117,7 +117,7 @@ class TestEdge:
 
 
 class TestAssetMixin:
-    """Asset is a mixin — marker for physical equipment on both graph sides."""
+    """Asset is a mixin marking physical equipment on both graph sides."""
 
     def test_node_asset_classes_are_asset(self):
         assert isinstance(edm.wind.WindTurbine(name="t"), edm.Asset)

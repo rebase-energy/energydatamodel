@@ -1,23 +1,23 @@
-"""energydatamodel — unified Element/Node/Edge hierarchy for energy assets & structures.
+"""energydatamodel: unified Element/Node/Edge hierarchy for energy assets & structures.
 
 System-structural classes (containers, areas, networks, bases, utilities) are
 exposed flat at ``edm.X``. Technology-specific equipment lives under
 sub-namespaces:
 
-* ``edm.solar`` — PV systems, arrays, mounts, solar areas
-* ``edm.wind`` — turbines, farms, wind areas
-* ``edm.battery`` — Battery
-* ``edm.hydro`` — reservoirs, turbines, plants
-* ``edm.heatpump`` — HeatPump
-* ``edm.building`` — Building, House
-* ``edm.weather`` — temperature/wind/radiation/rain/humidity sensors
-* ``edm.grid`` — Carrier, edges (Line, Link, Pipe, Interconnection),
+* ``edm.solar``: PV systems, arrays, mounts, solar areas
+* ``edm.wind``: turbines, farms, wind areas
+* ``edm.battery``: Battery
+* ``edm.hydro``: reservoirs, turbines, plants
+* ``edm.heatpump``: HeatPump
+* ``edm.building``: Building, House
+* ``edm.weather``: temperature/wind/radiation/rain/humidity sensors
+* ``edm.grid``: Carrier, edges (Line, Link, Pipe, Interconnection),
   grid nodes (JunctionPoint, Meter, DeliveryPoint, Transformer),
   Network/SubNetwork, EdgeAsset
 
 Subclassing any registered Element class (e.g. ``edm.NodeAsset``,
-``edm.grid.EdgeAsset``) auto-registers the subclass for JSON round-trips —
-no decorator required. See the README for the extension recipe.
+``edm.grid.EdgeAsset``) auto-registers the subclass for JSON round-trips,
+with no decorator required. See the README for the extension recipe.
 """
 
 from importlib.metadata import version
@@ -31,7 +31,7 @@ from timedatamodel import (
 )
 from timedatamodel import GeoLocation as TDMGeoLocation
 
-# Sub-namespaces — tech-specific equipment.
+# Sub-namespaces: tech-specific equipment.
 from . import battery, building, grid, heatpump, hydro, solar, weather, wind
 
 # Areas
@@ -92,8 +92,8 @@ from .node import Node
 from .quantities import Kind, Quantity, Scope, build_metric
 from .reference import Index, Reference, UnresolvedReferenceError, build_index
 
-# Element subclasses self-register via ``Element.__init_subclass__`` at definition
-# time, so a separate walk is no longer required. Value dataclasses (non-Element)
+# Element subclasses self-register via Element.__init_subclass__ at definition
+# time, so a separate walk is not required. Value dataclasses (non-Element)
 # don't go through that hook and must still be registered explicitly.
 register_value_type(Carrier)
 

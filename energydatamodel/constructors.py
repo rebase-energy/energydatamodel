@@ -1,7 +1,7 @@
 """Convenience constructors that build metadata-only ``TimeSeries`` instances
 with pre-filled metric strings for common energy quantities.
 
-Each constructor returns a fresh ``TimeSeries`` with ``df=None`` — suitable
+Each constructor returns a fresh ``TimeSeries`` with ``df=None``, suitable
 for declaring a series structure on an EDM element before any data exists.
 """
 
@@ -32,9 +32,9 @@ def _make(
     )
 
 
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Electricity
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def electricity_supply(
@@ -77,9 +77,9 @@ def electricity_demand_area(
     return _make(Quantity.ELECTRICITY, Kind.DEMAND, Scope.AREA, unit, data_type, frequency, timezone, description)
 
 
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Prices & flows
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def spot_price(
@@ -102,9 +102,9 @@ def cross_border_flow(
     return _make(Quantity.ELECTRICITY, Kind.FLOW, Scope.AREA, unit, data_type, frequency, timezone, description)
 
 
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Weather & other quantities
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def temperature(
@@ -147,9 +147,9 @@ def heating_demand(
     return _make(Quantity.HEATING, Kind.DEMAND, Scope.POINT, unit, data_type, frequency, timezone, description)
 
 
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Grid state
-# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def grid_frequency(
@@ -159,7 +159,7 @@ def grid_frequency(
     timezone: str = "UTC",
     description: str | None = None,
 ) -> TimeSeries:
-    """Grid frequency (Hz) — a per-synchronous-area observation.
+    """Grid frequency (Hz): a per-synchronous-area observation.
 
     Frequency is shared across all zones in an AC-synchronous grid (NSA, CESA,
     GBSA, ISA, BSA, IPSA), so this constructor uses :data:`Scope.AREA`. Default
