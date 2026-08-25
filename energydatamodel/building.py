@@ -22,9 +22,6 @@ class House(NodeAsset):
 
     type: str | None = None
 
-    # -----------------------------------------------------------------------
-    # convenience queries
-    # -----------------------------------------------------------------------
     def has_demand(self) -> bool:
         return bool(self.timeseries)
 

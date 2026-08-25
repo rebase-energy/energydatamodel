@@ -22,11 +22,6 @@ class UnresolvedReferenceError(LookupError):
     """Raised when a Reference can't be resolved against a tree."""
 
 
-# ---------------------------------------------------------------------------
-# Index
-# ---------------------------------------------------------------------------
-
-
 class Index:
     """``dict[UUID, Element]`` lookup, built once via DFS.
 
@@ -89,11 +84,6 @@ def build_index(root: Element) -> Index:
     return Index(by_id)
 
 
-# ---------------------------------------------------------------------------
-# Reference
-# ---------------------------------------------------------------------------
-
-
 class Reference[T: "Element"]:
     """A reference to another Element by its UUID.
 
@@ -122,13 +112,12 @@ class Reference[T: "Element"]:
             self._id = target
             self._target = None
         elif isinstance(target, str):
-            # Accept str form for hand-edited JSON / CLI convenience.
+            # Accept str form for hand-edited JSON and CLI convenience.
             self._id = UUID(target)
             self._target = None
         else:
             raise TypeError(f"Reference target must be Element | UUID | str, got {type(target).__name__}")
 
-    # -----------------------------------------------------------------------
     @property
     def id(self) -> UUID:
         """The UUID this reference points at."""
@@ -166,9 +155,6 @@ class Reference[T: "Element"]:
             raise UnresolvedReferenceError(f"Reference {self._id!s} does not resolve against the given tree.") from None
         return self._target
 
-    # -----------------------------------------------------------------------
-    # Optional path helper (debug only, not in the wire format)
-    # -----------------------------------------------------------------------
     def path(self, root: Element) -> tuple[str, ...]:
         """Best-effort name path from ``root`` to the target.
 
@@ -195,7 +181,6 @@ class Reference[T: "Element"]:
             f"Target {self._id!s} not reachable from root {type(root).__name__}({getattr(root, 'name', None)!r})."
         )
 
-    # -----------------------------------------------------------------------
     def __repr__(self) -> str:
         if self._target is None:
             return f"Reference({self._id!s})"

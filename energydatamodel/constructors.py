@@ -32,11 +32,6 @@ def _make(
     )
 
 
-# ---------------------------------------------------------------------------
-# Electricity
-# ---------------------------------------------------------------------------
-
-
 def electricity_supply(
     unit: str = "MW",
     data_type: DataType | None = DataType.ACTUAL,
@@ -77,11 +72,6 @@ def electricity_demand_area(
     return _make(Quantity.ELECTRICITY, Kind.DEMAND, Scope.AREA, unit, data_type, frequency, timezone, description)
 
 
-# ---------------------------------------------------------------------------
-# Prices & flows
-# ---------------------------------------------------------------------------
-
-
 def spot_price(
     unit: str = "EUR / MWh",
     data_type: DataType | None = DataType.ACTUAL,
@@ -100,11 +90,6 @@ def cross_border_flow(
     description: str | None = None,
 ) -> TimeSeries:
     return _make(Quantity.ELECTRICITY, Kind.FLOW, Scope.AREA, unit, data_type, frequency, timezone, description)
-
-
-# ---------------------------------------------------------------------------
-# Weather & other quantities
-# ---------------------------------------------------------------------------
 
 
 def temperature(
@@ -145,11 +130,6 @@ def heating_demand(
     description: str | None = None,
 ) -> TimeSeries:
     return _make(Quantity.HEATING, Kind.DEMAND, Scope.POINT, unit, data_type, frequency, timezone, description)
-
-
-# ---------------------------------------------------------------------------
-# Grid state
-# ---------------------------------------------------------------------------
 
 
 def grid_frequency(

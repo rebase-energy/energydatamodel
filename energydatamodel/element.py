@@ -39,23 +39,10 @@ from shapely.geometry.base import BaseGeometry
 from timedatamodel import TimeSeries
 from uuid6 import uuid7
 
-# ---------------------------------------------------------------------------
-# Field-metadata helpers
-# ---------------------------------------------------------------------------
-#
-# Each Element field is tagged with one of two roles:
-#
-#   - "infra"    : framework-owned (id, name, geometry, timeseries, extra,
-#                  members, tz, commissioning_date, from_element, ...).
-#                  Excluded from to_properties().
-#   - "domain"   : everything else. The default if no metadata is set.
-#
-# infra(children=True) additionally marks a children-bearing field
-# (members), so that element_to_storage_dict can drop it when
-# the row is written flat (children stored via FK in DB).
-#
-# Concrete subclasses don't need to mark their domain fields; only framework
-# infra fields use infra(...).
+# Every Element field carries a role: "infra" is framework-owned and excluded
+# from to_properties(), "domain" is everything else and is the default.
+# infra(children=True) marks the children-bearing field so
+# element_to_storage_dict can drop it when the row is written flat.
 
 
 @overload
@@ -127,21 +114,16 @@ class Element:
     name: str | None = field(default=None, metadata={"role": "infra"})
     timeseries: list[TimeSeries] = field(default_factory=list, metadata={"role": "infra"})
     geometry: BaseGeometry | None = field(default=None, metadata={"role": "infra"})
-    # Free-form bag for ad-hoc scalar fields not modeled here. Restricted to
-    # JSON-native scalars (str / int / float / bool / None) plus nested
-    # dict / list of same. EDM types and enums are not allowed; define a
-    # typed subclass instead.
+    # JSON-native scalars and nested dict/list of same only. EDM types and enums
+    # are rejected; define a typed subclass instead.
     extra: dict = field(default_factory=dict, metadata={"role": "infra"})
     lat: InitVar[float | None] = None
     lon: InitVar[float | None] = None
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
-        # Auto-register every Element subclass for JSON dispatch on definition.
-        # Last-write-wins: re-running a class definition in a notebook creates
-        # a new class object with the same name, and the latest one should be
-        # authoritative, matching Python's own class-redefinition semantics.
-        # Lazy import avoids the circular dependency with json_io.
+        # Last-write-wins, so re-running a class definition in a notebook rebinds
+        # the name. The import is lazy to avoid a cycle with json_io.
         from energydatamodel.json_io import _REGISTRY
 
         _REGISTRY[cls.__name__] = cls
@@ -165,9 +147,6 @@ class Element:
                     "WGS84 lon/lat range: did you swap lat and lon?"
                 )
 
-    # -----------------------------------------------------------------------
-    # shape
-    # -----------------------------------------------------------------------
     @property
     def latitude(self) -> float | None:
         """Latitude, if ``geometry`` is a shapely ``Point``; else ``None``."""
@@ -189,9 +168,6 @@ class Element:
             return None
         return self.geometry.centroid
 
-    # -----------------------------------------------------------------------
-    # tree
-    # -----------------------------------------------------------------------
     def children(self) -> list:
         """Child elements for tree walking. Override in subclasses with children."""
         return []
@@ -219,9 +195,6 @@ class Element:
 
         return build_index(self)
 
-    # -----------------------------------------------------------------------
-    # props
-    # -----------------------------------------------------------------------
     def to_properties(self) -> dict:
         """Domain-specific fields as a dict (excludes infra + children fields)."""
         props: dict = {}
@@ -231,15 +204,11 @@ class Element:
             value = getattr(self, f.name)
             if value is None:
                 continue
-            # Empty containers also skipped (empty lists/dicts are noise).
             if isinstance(value, (list, dict)) and len(value) == 0:
                 continue
             props[f.name] = value
         return props
 
-    # -----------------------------------------------------------------------
-    # json
-    # -----------------------------------------------------------------------
     def to_json(self, *, exclude_fields: set | None = None) -> dict:
         """Serialize to a JSON-compatible dict."""
         from energydatamodel.json_io import element_to_json
@@ -253,9 +222,6 @@ class Element:
 
         return element_from_json(data, expected_type=cls)
 
-    # -----------------------------------------------------------------------
-    # geojson
-    # -----------------------------------------------------------------------
     def geometry_to_geojson(self, geometry):
         if isinstance(geometry, Point):
             return {"type": "Point", "coordinates": list(geometry.coords)[0]}
@@ -304,9 +270,6 @@ class Element:
                     geojson_properties[attr_name] = attr_value
         return geojson_geometry, geojson_properties
 
-    # -----------------------------------------------------------------------
-    # misc
-    # -----------------------------------------------------------------------
     def to_dataframe(self):
         data = {f.name: getattr(self, f.name) for f in fields(self)}
         return pd.DataFrame({self.__class__.__name__: data})

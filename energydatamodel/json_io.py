@@ -37,11 +37,6 @@ from timedatamodel import DataType, Frequency, TimeSeries, TimeSeriesType
 from energydatamodel.element import Element, is_children_field
 from energydatamodel.reference import Reference
 
-# ---------------------------------------------------------------------------
-# Registries
-# ---------------------------------------------------------------------------
-
-
 _REGISTRY: dict[str, type[Element]] = {}
 _VALUE_REGISTRY: dict[str, type] = {}
 
@@ -75,11 +70,6 @@ def get_registry() -> dict[str, type[Element]]:
     return dict(_REGISTRY)
 
 
-# ---------------------------------------------------------------------------
-# extra validation
-# ---------------------------------------------------------------------------
-
-
 _JSON_SCALAR = (str, int, float, bool, type(None))
 
 
@@ -92,8 +82,7 @@ def _validate_extra(extra: dict, *, owner_type: str) -> None:
     """
 
     def _check(value, path: str) -> None:
-        # Enum subclasses of str (StrEnum, class X(str, Enum)) pass an
-        # isinstance(value, str) test, so check enums first and reject.
+        # str-subclassed enums pass isinstance(value, str), so check enums first.
         if isinstance(value, Enum):
             raise TypeError(
                 f"extra contains an Enum value ({type(value).__name__}.{value.name}) "
@@ -122,11 +111,6 @@ def _validate_extra(extra: dict, *, owner_type: str) -> None:
     _check(extra, "extra")
 
 
-# ---------------------------------------------------------------------------
-# Serialization (Element → dict)
-# ---------------------------------------------------------------------------
-
-
 def _tuples_to_lists(v: Any) -> Any:
     if isinstance(v, (list, tuple)):
         return [_tuples_to_lists(x) for x in v]
@@ -152,10 +136,8 @@ def _serialize_value(value: Any, *, exclude_fields: set | None = None) -> Any:
         name = getattr(value, "key", None) or str(value)
         return {"__tz__": name}
     if isinstance(value, BaseGeometry):
-        # Shapely geometry → GeoJSON dict tagged with __geometry__ for
-        # dispatch on load. mapping(value) returns tuples for coordinates;
-        # flatten to lists so the in-memory dict compares equal to the JSONB
-        # read-back (JSON has no tuple type).
+        # mapping() returns tuples for coordinates; flatten to lists so the
+        # in-memory dict compares equal to the JSONB read-back.
         geo = mapping(value)
         return {"__geometry__": True, "type": geo["type"], "coordinates": _tuples_to_lists(geo["coordinates"])}
     if isinstance(value, TimeSeries):
@@ -170,7 +152,7 @@ def _serialize_value(value: Any, *, exclude_fields: set | None = None) -> Any:
         return {k: _serialize_value(v, exclude_fields=exclude_fields) for k, v in value.items()}
     if isinstance(value, (str, int, float, bool)):
         return value
-    # Fallback: string repr. Avoids silent data loss for unknown types.
+    # Fall back to repr rather than lose an unknown type silently.
     return repr(value)
 
 
@@ -276,11 +258,6 @@ def element_to_storage_dict(element: Element, *, extra_excludes: set | None = No
     return element_to_json(element, exclude_fields=excludes)
 
 
-# ---------------------------------------------------------------------------
-# Deserialization (dict → Element): single pass
-# ---------------------------------------------------------------------------
-
-
 def element_from_json(data: dict, *, expected_type: type[Element] | None = None) -> Element:
     """Public: deserialize a JSON-compatible dict into an Element tree.
 
@@ -299,8 +276,8 @@ def from_json_str(text: str, *, expected_type: type[Element] | None = None) -> E
 
 
 def _instantiate(data: Any) -> Any:
-    # Tagged-dict markers: the double-underscore keys are reserved for
-    # serializer metadata and cannot collide with dataclass field names.
+    # Double-underscore keys are reserved for serializer metadata, so they
+    # cannot collide with dataclass field names.
     if isinstance(data, dict) and "__tuple__" in data:
         return tuple(_instantiate(v) for v in data["__tuple__"])
     if isinstance(data, dict) and data.get("__geometry__") is True:
@@ -321,7 +298,6 @@ def _instantiate(data: Any) -> Any:
         kwargs = _build_kwargs(cls, data)
         return cls(**kwargs)
     if isinstance(data, dict) and "__type__" in data:
-        # Tagged but unknown: fail loudly.
         raise ValueError(f"Unknown Element type {data['__type__']!r}. Known types: {sorted(_REGISTRY)}")
     if isinstance(data, list):
         return [_instantiate(v) for v in data]
@@ -350,7 +326,7 @@ def _build_kwargs(cls: type[Element], data: dict) -> dict:
         if key not in field_map:
             continue  # unknown field: ignore (forward-compat)
         f = field_map[key]
-        # Prefer resolved type hint (handles from __future__ import annotations).
+        # Resolved hints are required under `from __future__ import annotations`.
         field_type = hints.get(key, f.type)
         kwargs[key] = _instantiate_for_field(field_type, raw)
     return kwargs
@@ -411,12 +387,6 @@ def _timeseries_from_dict(d: dict) -> TimeSeries:
     return TimeSeries(df=None, **kwargs)
 
 
-# ---------------------------------------------------------------------------
-# Convenience: register every currently-known Element subclass.
-# Called from __init__ after all modules have loaded.
-# ---------------------------------------------------------------------------
-
-
 def register_builtin_elements() -> None:
     """Register all Element subclasses reachable via __subclasses__ at call time.
 
@@ -429,7 +399,7 @@ def register_builtin_elements() -> None:
     def _walk(cls: type[Element]):
         for sub in cls.__subclasses__():
             with contextlib.suppress(ValueError):
-                # ValueError → already registered with same class object.
+                # ValueError means it is already registered to this same class.
                 register_element(sub)
             _walk(sub)
 

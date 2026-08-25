@@ -43,11 +43,6 @@ class Carrier:
     type: str
 
 
-# ---------------------------------------------------------------------------
-# EdgeAsset
-# ---------------------------------------------------------------------------
-
-
 @dataclass(repr=False, kw_only=True)
 class EdgeAsset(Edge, Asset):
     """Mixin intermediate: an ``Edge`` that is also an ``Asset``.
@@ -55,11 +50,6 @@ class EdgeAsset(Edge, Asset):
     Single mixin point on the edge side. Concrete edge equipment classes
     (``Line``, ``Link``, ``Pipe``, ``Interconnection``) single-inherit from here.
     """
-
-
-# ---------------------------------------------------------------------------
-# Nodes
-# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)
@@ -90,11 +80,6 @@ class Transformer(GridNode):
     capacity: float | None = None  #: Apparent-power rating in MVA.
     voltage_hv: float | None = None  #: HV-side nominal voltage in kV.
     voltage_lv: float | None = None  #: LV-side nominal voltage in kV.
-
-
-# ---------------------------------------------------------------------------
-# Edges
-# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)
@@ -129,11 +114,6 @@ class Pipe(EdgeAsset):
 
     capacity: float | None = None
     medium: str = "gas"
-
-
-# ---------------------------------------------------------------------------
-# Collections
-# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)

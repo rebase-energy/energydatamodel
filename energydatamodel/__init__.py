@@ -31,7 +31,7 @@ from timedatamodel import (
 )
 from timedatamodel import GeoLocation as TDMGeoLocation
 
-# Sub-namespaces: tech-specific equipment.
+# Sub-namespaces
 from . import battery, building, grid, heatpump, hydro, solar, weather, wind
 
 # Areas
@@ -61,7 +61,7 @@ from .constructors import (
     temperature,
 )
 
-# Containers (Collection + subclasses)
+# Containers
 from .containers import (
     Collection,
     EnergyCommunity,
@@ -92,9 +92,8 @@ from .node import Node
 from .quantities import Kind, Quantity, Scope, build_metric
 from .reference import Index, Reference, UnresolvedReferenceError, build_index
 
-# Element subclasses self-register via Element.__init_subclass__ at definition
-# time, so a separate walk is not required. Value dataclasses (non-Element)
-# don't go through that hook and must still be registered explicitly.
+# Element subclasses self-register via __init_subclass__; value dataclasses do
+# not go through that hook and must be registered here.
 register_value_type(Carrier)
 
 

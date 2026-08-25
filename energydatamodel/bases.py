@@ -24,11 +24,6 @@ if TYPE_CHECKING:
     from energydatamodel.grid import Carrier
 
 
-# ---------------------------------------------------------------------------
-# NodeAsset: the single (Node, Asset) mixin point
-# ---------------------------------------------------------------------------
-
-
 @dataclass(repr=False, kw_only=True)
 class NodeAsset(Node, Asset):
     """Mixin intermediate: a ``Node`` that is also an ``Asset``.
@@ -37,11 +32,6 @@ class NodeAsset(Node, Asset):
     and the role-specific intermediates :class:`Sensor` and :class:`GridNode`
     all inherit from here. Single inheritance below this point.
     """
-
-
-# ---------------------------------------------------------------------------
-# Sensor: measurement instruments
-# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)
@@ -53,11 +43,6 @@ class Sensor(NodeAsset):
     """
 
     height: float | None = infra(default=None)
-
-
-# ---------------------------------------------------------------------------
-# GridNode: topological point in a grid
-# ---------------------------------------------------------------------------
 
 
 @dataclass(repr=False, kw_only=True)
