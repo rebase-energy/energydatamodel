@@ -14,7 +14,8 @@ EnergyDataModel can be installed from PyPI:
 
    pip install energydatamodel
 
-Python 3.12 or later is required.
+Python 3.12 or later is required. ``PVSystem.to_pvlib()`` requires the
+optional ``solar`` extra: ``pip install energydatamodel[solar]``.
 
 Basic usage
 -----------

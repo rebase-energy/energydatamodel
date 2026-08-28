@@ -4,7 +4,6 @@ import json
 from dataclasses import dataclass
 
 import pandas as pd
-import pvlib
 
 from energydatamodel.bases import NodeAsset
 
@@ -68,6 +67,13 @@ class PVSystem(NodeAsset):
     racking_model: str = "open_rack"
 
     def to_pvlib(self, **kwargs):
+        try:
+            import pvlib
+        except ImportError:
+            raise ImportError(
+                "pvlib is required for to_pvlib(). Install it with: pip install energydatamodel[solar]"
+            ) from None
+
         if self.module_parameters is None:
             self.module_parameters = {"pdc0": self.capacity}
         if "pdc0" not in self.module_parameters:

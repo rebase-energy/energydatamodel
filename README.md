@@ -196,6 +196,11 @@ Install the **stable** release:
 pip install energydatamodel
 ```
 
+`PVSystem.to_pvlib()` requires the optional `solar` extra:
+```bash
+pip install energydatamodel[solar]
+```
+
 Install the **latest** release: 
 ```bash
 pip install git+https://github.com/rebase-energy/energydatamodel.git
